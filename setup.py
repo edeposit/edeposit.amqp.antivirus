@@ -1,20 +1,11 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# Interpreter version: python 2.7
-#
-# Imports =====================================================================
+pyclamd
 
+Ubuntu packages: clamav clamav-daemon
+Suse packages: clamav
 
+Ubuntu service: clamav-daemon
+Suse service: clamd
 
-# Variables ===================================================================
+Jednou za čas: freshclam pro update signatur.
 
-
-
-# Functions & objects =========================================================
-
-
-
-# Main program ================================================================
-if __name__ == '__main__':
-    pass
+pip install http://xael.org/norman/python/pyclamd/pyClamd-0.3.4.tar.gz
