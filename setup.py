@@ -1,5 +1,3 @@
-pyclamd
-
 Ubuntu packages: clamav clamav-daemon
 Suse packages: clamav
 
@@ -15,3 +13,7 @@ pip install http://xael.org/norman/python/pyclamd/pyClamd-0.3.4.tar.gz
 
 Závislosti:
     sh
+
+dependency_links = [
+    "http://xael.org/norman/python/pyclamd/pyClamd-0.3.4.tar.gz"
+]
