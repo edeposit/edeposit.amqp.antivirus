@@ -23,6 +23,10 @@ def scan_file(path):
 
     Returns:
         dict: ``{filename: ("FOUND", "virus type")}`` or blank dict.
+
+    Raises:
+        ValueError: When the server is not running.
+        AssertionError: When the internal file doesn't exists.
     """
     path = os.path.abspath(path)
     assert os.path.exists(path), "Unreachable file '%s'." % path
@@ -44,4 +48,4 @@ def scan_file(path):
 
     result = cd.scan_file(path)
 
-    return result if result else {}  # result is dict or none, we need dict
+    return result if result else {}  # result is dict or None, we need dict
