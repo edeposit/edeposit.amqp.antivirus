@@ -4,17 +4,22 @@
 # Interpreter version: python 2.7
 #
 # Imports =====================================================================
+from collections import namedtuple
 
 
-
-# Variables ===================================================================
-
-
-
-# Functions & objects =========================================================
+# Requests ====================================================================
+class ScanFile(namedtuple("ScanFile", ["filename", "b64_data"])):
+    pass
 
 
+class UpdateDatabase(namedtuple("UpdateDatabase", [])):
+    pass
 
-# Main program ================================================================
-if __name__ == '__main__':
+
+# Responses ===================================================================
+class ScanResult(namedtuple("ScanResult", ["filename", "result"])):
+    pass
+
+
+class DatabaseUpdated(namedtuple("DatabaseUpdated", ["log"])):
     pass
