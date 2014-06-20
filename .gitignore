@@ -1,0 +1,8 @@
+*.pyc
+dist/*
+src/edeposit.amqp.antivirus.egg-info/*
+docs/_build
+MANIFEST
+*.html
+src/edeposit/amqp/antivirus/aleph
+src/edeposit/amqp/antivirus/decoders/aleph
