@@ -4,17 +4,41 @@
 # Interpreter version: python 2.7
 #
 # Imports =====================================================================
-
-
-
-# Variables ===================================================================
-
+import antivirus
+import structures
 
 
 # Functions & objects =========================================================
+def _instanceof(instance, cls):
+    """
+    Check type of `instance` by matching ``.__name__`` with `cls.__name__`.
+    """
+    return type(instance).__name__ == cls.__name__
 
 
+# Main function ===============================================================
+def reactToAMQPMessage(message, UUID):
+    """
+    React to given (AMQP) message. `message` is usually expected to be
+    :py:func:`collections.namedtuple` structure filled with all necessary data.
 
-# Main program ================================================================
-if __name__ == '__main__':
-    pass
+    Args:
+        message (.. class): TODO: ..
+
+        UUID (str):                unique ID of received message
+
+    Returns:
+        : response TODO: comment when the protocol will be ready
+
+    Raises:
+        ValueError: if bad type of `message` structure is given.
+    """
+    if _instanceof(message, structures.ScanFile):
+        return antivirus.save_and_scan(
+            message.filename,
+            message.b64_data
+        )
+
+    raise ValueError(
+        "Unknown type of request: '" + str(type(message)) + "'!"
+    )
