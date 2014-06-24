@@ -19,17 +19,17 @@ function show_help {
 }
 
 function run_all_tests {
-    py.test $TEST_PATH;
+    sudo env PYTHONPATH=$PYTHONPATH py.test $TEST_PATH;
     exit
 }
 
 function run_int_tests {
-    py.test "$TEST_PATH/integration";
+    sudo env PYTHONPATH=$PYTHONPATH py.test "$TEST_PATH/integration";
     exit
 }
 
 function run_unit_tests {
-    py.test "$TEST_PATH/unittests";
+    supy.test "$TEST_PATH/unittests";
     exit
 }
 
