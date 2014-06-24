@@ -13,6 +13,7 @@ from tempfile import NamedTemporaryFile as NTFile
 
 import wrappers.clamd as clamd
 import wrappers.clamscan as clamscan
+from wrappers.freshclam import update_database
 import settings
 
 

@@ -34,9 +34,15 @@ def reactToAMQPMessage(message, UUID):
         ValueError: if bad type of `message` structure is given.
     """
     if _instanceof(message, structures.ScanFile):
-        return antivirus.save_and_scan(
+        result = antivirus.save_and_scan(
             message.filename,
             message.b64_data
+        )
+        return structures.ScanResult(message.filename, result)
+
+    elif _instanceof(message, structures.UpdateDatabase):
+        return structures.DatabaseUpdated(
+            antivirus.update_database()
         )
 
     raise ValueError(
