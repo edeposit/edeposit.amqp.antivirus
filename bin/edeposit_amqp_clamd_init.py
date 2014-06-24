@@ -14,12 +14,18 @@ import argparse
 
 try:
     import edeposit.amqp.antivirus as antivirus
+    from edeposit.amqp.antivirus import settings
 except ImportError:
     sys.path.insert(0, os.path.abspath('../src/edeposit/amqp'))
     import antivirus
+    from antivirus import settings
 
 
 # Variables ===================================================================
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+
+
 REQUIRED_SETTINGS = {
     "User": "$username",
     "LocalSocketGroup": "$groupname",
@@ -113,6 +119,40 @@ def _is_deb_system():
     return os.path.exists("/etc/apt")
 
 
+def main(args):
+    pass
+
+
 # Main program ================================================================
 if __name__ == '__main__':
-    pass
+    parser = argparse.ArgumentParser(
+        description="edeposit.amqp.antivirus ClamAV initializer.",
+    )
+    parser.add_argument(
+        flag="-v",
+        name="--verbose",
+        help="Print debug messages.",
+        action="store_true"
+    )
+    parser.add_argument(
+        flag="-o",
+        name="--overwrite",
+        help="""Overwrite default configuration file. Don't worry, your original
+                file will be stored in backup_.""",
+        action="store_true"
+    )
+    parser.add_argument(
+        flag="-c",
+        name="--config",
+        default=settings.CONF_FILE,
+        help="Path to the configuration file. Default %s." % settings.CONF_FILE
+    )
+    args = parser.parse_args()
+
+    if args.verbose:
+        logger.setLevel(logging.DEBUG)
+        logger.debug("Logger set to debug level.")
+    else:
+        logger.setLevel(logging.INFO)
+
+    main(args)
