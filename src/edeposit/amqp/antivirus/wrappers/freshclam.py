@@ -3,6 +3,9 @@
 #
 # Interpreter version: python 2.7
 #
+"""
+Wrapper over ``freshclam`` program to update database over amqp.
+"""
 # Imports =====================================================================
 import os
 from functools import wraps
@@ -27,4 +30,7 @@ def require_root(fn):
 
 @require_root
 def update_database():
+    """
+    Run ``freshclam``. Make sure, that user is root.
+    """
     return sh.freshclam()
