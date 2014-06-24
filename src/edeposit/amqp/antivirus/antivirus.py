@@ -3,6 +3,9 @@
 #
 # Interpreter version: python 2.7
 #
+"""
+ClamAV wrapper to scan files for malware.
+"""
 # Imports =====================================================================
 import os
 
