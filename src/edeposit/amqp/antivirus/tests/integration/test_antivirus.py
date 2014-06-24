@@ -64,3 +64,15 @@ def test_clamscan_clean():
 
     result = antivirus.save_and_scan("/home/bystrousak/conv.sh", CLEAN)
     assert not result
+
+
+def test_update():
+    settings.USE_CLAMD = True
+    reload(antivirus)
+
+    result = antivirus.update_database()
+
+    assert "ClamAV update process" in result
+    assert "main.cvd" in result
+    assert "daily.cld" in result
+    assert "bytecode.cvd" in result
