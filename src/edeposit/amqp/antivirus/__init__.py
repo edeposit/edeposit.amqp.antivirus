@@ -3,6 +3,8 @@
 #
 # Interpreter version: python 2.7
 #
+"""
+"""
 # Imports =====================================================================
 import antivirus
 import structures
@@ -23,12 +25,12 @@ def reactToAMQPMessage(message, UUID):
     :py:func:`collections.namedtuple` structure filled with all necessary data.
 
     Args:
-        message (.. class): TODO: ..
-
-        UUID (str):                unique ID of received message
+        message (object): One of the request objects defined in
+                          :mod:`structures`.
+        UUID (str): Unique ID of received message.
 
     Returns:
-        : response TODO: comment when the protocol will be ready
+        object: Response class from :mod:`structures`.
 
     Raises:
         ValueError: if bad type of `message` structure is given.
