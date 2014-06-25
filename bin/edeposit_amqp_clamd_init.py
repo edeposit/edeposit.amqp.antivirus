@@ -205,8 +205,30 @@ def update_configuration(configuration):
 
 
 def main(args):
-    if not os.path.exists(args.config):
-        pass
+    conf = None
+    if not os.path.exists(args.config):  # create new conf file
+        dir_name = os.path.dirname(args.config)
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name, 0755)
+
+        conf = CLEAN_CONFIG
+    elif args.overwrite():               # ovewrite old conf file
+        if not os.path.exists(args.config + "_"):
+            shutil.copyfile(args.config, args.config + "_")
+
+        conf = CLEAN_CONFIG
+    else:                                # switch variables in existing file
+        with open(args.config) as f:
+            conf = f.read()
+
+    # write the conf file
+    with open(args.config, "w") as f:
+        f.write(update_configuration(conf))
+
+    # TODO: check log files, permissions and so on
+
+
+
 
 
 # Main program ================================================================
