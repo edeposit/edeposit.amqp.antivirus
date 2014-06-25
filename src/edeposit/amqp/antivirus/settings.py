@@ -34,6 +34,9 @@ import os.path
 #: seconds.
 USE_CLAMD = True
 
+#: Name of the configuration file.
+CONF_FILE = "clamd.conf"
+
 
 # User configuration reader (don't edit this ==================================
 _ALLOWED = [str, int, float]
