@@ -210,21 +210,21 @@ def update_configuration(configuration):
 
 def create_config(cnf_file, uid, overwrite):
     conf = None
-    if not os.path.exists(cnf_file):  # create new conf file
+    if not os.path.exists(cnf_file):       # create new conf file
         dir_name = os.path.dirname(cnf_file)
         if not os.path.exists(dir_name):
             os.makedirs(dir_name, 0755)
             os.chown(dir_name, uid, -1)
 
         conf = CLEAN_CONFIG
-    elif overwrite:               # ovewrite old conf file
+    elif overwrite:                        # ovewrite old conf file
         backup_name = cnf_file + "_"
         if not os.path.exists(backup_name):
             shutil.copyfile(cnf_file, backup_name)
             os.chown(backup_name, uid, -1)
 
         conf = CLEAN_CONFIG
-    else:                                # switch variables in existing file
+    else:                                  # switch variables in existing file
         with open(cnf_file) as f:
             conf = f.read()
 
@@ -251,10 +251,21 @@ def create_log(log_file, uid):
     os.chmod(log_file, 0640)
 
 
+def get_service_name():
+    if conf_writer.is_deb_system():
+        return "clamav-daemon"
+    else:
+        return "clamd"
+
+
 @require_root
 def main(conf_file, overwrite):
     uid = pwd.getpwnam(get_username()).pw_uid
 
+    # stop the daemon
+    sh.service(get_service_name(), "stop")
+
+    # create files
     create_config(
         cnf_file=conf_file,
         uid=uid,
@@ -264,6 +275,9 @@ def main(conf_file, overwrite):
         log_file=REQUIRED_SETTINGS["LogFile"],
         uid=uid
     )
+
+    # start the daemon
+    sh.service(get_service_name(), "start")
 
 
 # Main program ================================================================
