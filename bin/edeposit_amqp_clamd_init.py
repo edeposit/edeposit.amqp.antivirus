@@ -233,8 +233,8 @@ def create_config(cnf_file, uid, overwrite):
     os.chown(cnf_file, uid, -1)
     os.chmod(cnf_file, 0644)
 
-    if not settings.is_deb_system():
-        symlink = settings.DEB_CONF_PATH + settings.CONF_FILE
+    symlink = settings.DEB_CONF_PATH + settings.CONF_FILE
+    if not settings.is_deb_system() and not os.path.exists(symlink):
         os.symlink(cnf_file, symlink)
         os.chown(symlink, uid, -1)
         os.chmod(symlink, 0644)
