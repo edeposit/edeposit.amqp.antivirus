@@ -1,0 +1,3 @@
+include CONTRIBUTORS.rst CHANGES.rst README.rst LICENSE.txt
+recursive-exclude src/edeposit/amqp/antivirus/tests *
+recursive-include html_docs *
