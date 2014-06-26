@@ -27,6 +27,14 @@ import os
 import os.path
 
 
+# Functions ===================================================================
+def is_deb_system():
+    """
+    Badly written test whether the system is deb/apt based or not.
+    """
+    return os.path.exists("/etc/apt")
+
+
 # Module configuration ========================================================
 #: True - ``clamd`` daemon will be used, False - ``clamscan`` will be used.
 #: ``clamscan`` takes much less memory, but takes a LOT more time to scan.
@@ -34,8 +42,17 @@ import os.path
 #: seconds.
 USE_CLAMD = True
 
+#: Configuration file directory at debian systems.
+DEB_CONF_PATH = "/etc/clamav/"
+
+#: Configuration file directory at suse systems.
+SUSE_CONF_PATH = "/etc/"
+
 #: Name of the configuration file.
 CONF_FILE = "clamd.conf"
+
+#: Path to the configuration file.
+CONF_PATH = (DEB_CONF_PATH if is_deb_system() else SUSE_CONF_PATH) + CONF_FILE
 
 #: Path to the local unix socket - don't change this if you are not sure (it
 #: will break things).

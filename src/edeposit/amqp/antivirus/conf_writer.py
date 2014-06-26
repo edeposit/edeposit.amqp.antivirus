@@ -3,9 +3,6 @@
 #
 # Interpreter version: python 2.7
 #
-# Imports =====================================================================
-import os
-import os.path
 
 
 # Functions & objects =========================================================
@@ -71,10 +68,3 @@ def comment(data, what):
     )
 
     return "\n".join(data)
-
-
-def is_deb_system():
-    """
-    Badly written test whether the system is deb/apt based or not.
-    """
-    return os.path.exists("/etc/apt")
