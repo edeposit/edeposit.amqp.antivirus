@@ -37,6 +37,17 @@ USE_CLAMD = True
 #: Name of the configuration file.
 CONF_FILE = "clamd.conf"
 
+#: Path to the local unix socket - don't change this if you are not sure (it
+#: will break things).
+LOCALSOCKET = "/var/run/clamav/clamd.ctl"
+
+#: Path to the pid file - don't change this if you are not sure (it will break
+#: things).
+PIDFILE = "/var/run/clamav/clamd.pid"
+
+#: Path to the log file.
+LOGFILE = "/var/log/clamav/clamav.log"
+
 
 # User configuration reader (don't edit this ==================================
 _ALLOWED = [str, int, float]

@@ -39,9 +39,9 @@ CONF_FILE = CONF_PREFIX + settings.CONF_FILE
 REQUIRED_SETTINGS = {
     "User": "$username",
     "LocalSocketGroup": "$groupname",
-    "LocalSocket": "/var/run/clamav/clamd.ctl",
-    "LogFile": "/var/log/clamav/clamav.log",
-    "PidFile": "/var/run/clamav/clamd.pid",
+    "LocalSocket": settings.LOCALSOCKET,
+    "LogFile": settings.LOGFILE,
+    "PidFile": settings.PIDFILE,
     "MaxThreads": "2",
     "MaxConnectionQueueLength": "3",
     "LogSyslog": "false",
