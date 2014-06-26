@@ -31,10 +31,6 @@ except ImportError:
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
-# generate path for the configuration file (based on type of system)
-CONF_PREFIX = "/etc/clamav/" if conf_writer.is_deb_system() else "/etc/clamav"
-CONF_FILE = CONF_PREFIX + settings.CONF_FILE  #: Path of the configuration file.
-
 #: All required settings is there, rest is not important.
 REQUIRED_SETTINGS = {
     "User": "$username",
@@ -192,7 +188,7 @@ CLEAN_CONFIG = zlib.decompress(base64.b64decode(CLEAN_CONFIG))
 
 # Functions & objects =========================================================
 def get_username():
-    if conf_writer.is_deb_system():
+    if settings.is_deb_system():
         return "clamav"
     else:
         return "vscan"
@@ -210,12 +206,13 @@ def update_configuration(configuration):
 
 def create_config(cnf_file, uid, overwrite):
     conf = None
-    if not os.path.exists(cnf_file):       # create new conf file
-        dir_name = os.path.dirname(cnf_file)
-        if not os.path.exists(dir_name):
-            os.makedirs(dir_name, 0755)
-            os.chown(dir_name, uid, -1)
 
+    # needed also on suse, because pyClamd module
+    if not os.path.exists(settings.DEB_CONF_PATH):
+        os.makedirs(settings.DEB_CONF_PATH, 0755)
+        os.chown(settings.DEB_CONF_PATH, uid, -1)
+
+    if not os.path.exists(cnf_file):       # create new conf file
         conf = CLEAN_CONFIG
     elif overwrite:                        # ovewrite old conf file
         backup_name = cnf_file + "_"
@@ -236,6 +233,12 @@ def create_config(cnf_file, uid, overwrite):
     os.chown(cnf_file, uid, -1)
     os.chmod(cnf_file, 0644)
 
+    if not settings.is_deb_system():
+        symlink = settings.DEB_CONF_PATH + settings.CONF_FILE
+        os.symlink(cnf_file, symlink)
+        os.chown(symlink, uid, -1)
+        os.chmod(symlink, 0644)
+
 
 def create_log(log_file, uid):
     if not os.path.exists(log_file):  # create new log file
@@ -252,7 +255,7 @@ def create_log(log_file, uid):
 
 
 def get_service_name():
-    if conf_writer.is_deb_system():
+    if settings.is_deb_system():
         return "clamav-daemon"
     else:
         return "clamd"
@@ -301,8 +304,8 @@ if __name__ == '__main__':
     parser.add_argument(
         "-c",
         "--config",
-        default=CONF_FILE,
-        help="Path to the configuration file. Default %s." % CONF_FILE
+        default=settings.CONF_PATH,
+        help="Path to the configuration file. Default %s." % settings.CONF_PATH
     )
     args = parser.parse_args()
 
