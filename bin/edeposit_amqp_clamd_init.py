@@ -5,6 +5,8 @@
 #
 # Imports =====================================================================
 import os
+import sh
+import pwd
 import sys
 import shutil
 import os.path
@@ -16,11 +18,13 @@ try:
     import edeposit.amqp.antivirus as antivirus
     from edeposit.amqp.antivirus import settings
     from edeposit.amqp.antivirus import conf_writer
+    from edeposit.amqp.antivirus.wrappers.freshclam import require_root
 except ImportError:
     sys.path.insert(0, os.path.abspath('../src/edeposit/amqp'))
     import antivirus
     from antivirus import settings
     from antivirus import conf_writer
+    from antivirus.wrappers.freshclam import require_root
 
 
 # Variables ===================================================================
@@ -204,31 +208,59 @@ def update_configuration(configuration):
     return configuration
 
 
-def main(args):
+def create_config(cnf_file, uid):
     conf = None
-    if not os.path.exists(args.config):  # create new conf file
-        dir_name = os.path.dirname(args.config)
+    if not os.path.exists(cnf_file):  # create new conf file
+        dir_name = os.path.dirname(cnf_file)
         if not os.path.exists(dir_name):
             os.makedirs(dir_name, 0755)
+            os.chown(dir_name, uid, -1)
 
         conf = CLEAN_CONFIG
     elif args.overwrite():               # ovewrite old conf file
-        if not os.path.exists(args.config + "_"):
-            shutil.copyfile(args.config, args.config + "_")
+        if not os.path.exists(cnf_file + "_"):
+            shutil.copyfile(cnf_file, cnf_file + "_")
 
         conf = CLEAN_CONFIG
     else:                                # switch variables in existing file
-        with open(args.config) as f:
+        with open(cnf_file) as f:
             conf = f.read()
 
     # write the conf file
-    with open(args.config, "w") as f:
+    with open(cnf_file, "w") as f:
         f.write(update_configuration(conf))
 
-    # TODO: check log files, permissions and so on
+    # permission check (uid)
+    os.chown(cnf_file, uid, -1)
+    os.chmod(cnf_file, 0644)
 
 
+def create_log(log_file, uid):
+    if not os.path.exists(log_file):  # create new log file
+        dir_name = os.path.dirname(log_file)
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name, 0755)
+            os.chown(dir_name, uid, -1)
 
+        with open(log_file, "w") as f:
+            f.write("")
+
+    os.chown(log_file, uid, -1)
+    os.chmod(log_file, 0640)
+
+
+@require_root
+def main(args):
+    uid = pwd.getpwnam(get_username()).pw_uid
+
+    create_config(
+        args.config,
+        uid
+    )
+    create_log(
+        REQUIRED_SETTINGS["LogFile"],
+        uid
+    )
 
 
 # Main program ================================================================
