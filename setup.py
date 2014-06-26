@@ -56,11 +56,11 @@ class BuildSphinx(sdist):
 
 
 setup(
-    name='edeposit.amqp.ftp',
+    name='edeposit.amqp.antivirus',
     version=getVersion(changelog),
-    description="E-Deposit's wrapper over ProFTPD.",
+    description="E-Deposit's AMQP wrapper over ClamAV.",
     long_description=long_description,
-    url='https://github.com/edeposit/edeposit.amqp.ftp/',
+    url='https://github.com/edeposit/edeposit.amqp.antivirus/',
 
     author='Edeposit team',
     author_email='edeposit@email.cz',
