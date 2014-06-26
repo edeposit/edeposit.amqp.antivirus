@@ -31,11 +31,11 @@ except ImportError:
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
-
+# generate path for the configuration file (based on type of system)
 CONF_PREFIX = "/etc/clamav/" if conf_writer.is_deb_system() else "/etc/clamav"
-CONF_FILE = CONF_PREFIX + settings.CONF_FILE
+CONF_FILE = CONF_PREFIX + settings.CONF_FILE  #: Path of the configuration file.
 
-
+#: All required settings is there, rest is not important.
 REQUIRED_SETTINGS = {
     "User": "$username",
     "LocalSocketGroup": "$groupname",
@@ -193,9 +193,9 @@ CLEAN_CONFIG = zlib.decompress(base64.b64decode(CLEAN_CONFIG))
 # Functions & objects =========================================================
 def get_username():
     if conf_writer.is_deb_system():
-        return "vscan"
-    else:
         return "clamav"
+    else:
+        return "vscan"
 
 
 def update_configuration(configuration):
@@ -208,7 +208,7 @@ def update_configuration(configuration):
     return configuration
 
 
-def create_config(cnf_file, uid):
+def create_config(cnf_file, uid, overwrite):
     conf = None
     if not os.path.exists(cnf_file):  # create new conf file
         dir_name = os.path.dirname(cnf_file)
@@ -217,9 +217,11 @@ def create_config(cnf_file, uid):
             os.chown(dir_name, uid, -1)
 
         conf = CLEAN_CONFIG
-    elif args.overwrite():               # ovewrite old conf file
-        if not os.path.exists(cnf_file + "_"):
-            shutil.copyfile(cnf_file, cnf_file + "_")
+    elif overwrite:               # ovewrite old conf file
+        backup_name = cnf_file + "_"
+        if not os.path.exists(backup_name):
+            shutil.copyfile(cnf_file, backup_name)
+            os.chown(backup_name, uid, -1)
 
         conf = CLEAN_CONFIG
     else:                                # switch variables in existing file
@@ -250,16 +252,17 @@ def create_log(log_file, uid):
 
 
 @require_root
-def main(args):
+def main(conf_file, overwrite):
     uid = pwd.getpwnam(get_username()).pw_uid
 
     create_config(
-        args.config,
-        uid
+        cnf_file=conf_file,
+        uid=uid,
+        overwrite=overwrite
     )
     create_log(
-        REQUIRED_SETTINGS["LogFile"],
-        uid
+        log_file=REQUIRED_SETTINGS["LogFile"],
+        uid=uid
     )
 
 
@@ -269,21 +272,21 @@ if __name__ == '__main__':
         description="edeposit.amqp.antivirus ClamAV initializer.",
     )
     parser.add_argument(
-        flag="-v",
-        name="--verbose",
+        "-v",
+        "--verbose",
         help="Print debug messages.",
         action="store_true"
     )
     parser.add_argument(
-        flag="-o",
-        name="--overwrite",
+        "-o",
+        "--overwrite",
         help="""Overwrite default configuration file. Don't worry, your original
                 file will be stored in backup_.""",
         action="store_true"
     )
     parser.add_argument(
-        flag="-c",
-        name="--config",
+        "-c",
+        "--config",
         default=CONF_FILE,
         help="Path to the configuration file. Default %s." % CONF_FILE
     )
@@ -295,4 +298,8 @@ if __name__ == '__main__':
     else:
         logger.setLevel(logging.INFO)
 
-    main(args)
+    try:
+        main(args.config, args.overwrite)
+    except AssertionError as e:
+        sys.stderr.write(e.message + "\n")
+        sys.exit(1)
