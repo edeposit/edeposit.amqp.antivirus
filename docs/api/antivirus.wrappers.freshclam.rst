@@ -1,5 +1,5 @@
-antivirus.wrappers.freshclam module
-===================================
+freshclam wrapper
+=================
 
 .. automodule:: antivirus.wrappers.freshclam
     :members:

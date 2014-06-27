@@ -1,5 +1,5 @@
-antivirus.wrappers.clamscan module
-==================================
+clamscan wrapper
+================
 
 .. automodule:: antivirus.wrappers.clamscan
     :members:

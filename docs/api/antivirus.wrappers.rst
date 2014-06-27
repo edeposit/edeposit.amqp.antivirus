@@ -1,5 +1,8 @@
-antivirus.wrappers package
-==========================
+wrappers package
+================
+
+This package contains lowlevel wrappers over ``clamd``, ``clamscan`` and
+``freshclam``.
 
 Submodules
 ----------
@@ -9,11 +12,3 @@ Submodules
    antivirus.wrappers.clamd
    antivirus.wrappers.clamscan
    antivirus.wrappers.freshclam
-
-Module contents
----------------
-
-.. automodule:: antivirus.wrappers
-    :members:
-    :undoc-members:
-    :show-inheritance:

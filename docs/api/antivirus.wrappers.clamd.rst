@@ -1,5 +1,5 @@
-antivirus.wrappers.clamd module
-===============================
+clamd wrapper
+=============
 
 .. automodule:: antivirus.wrappers.clamd
     :members:
