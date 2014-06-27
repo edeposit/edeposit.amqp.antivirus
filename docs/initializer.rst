@@ -19,7 +19,7 @@ Usage
 
     optional arguments:
       -h, --help            show this help message and exit
-      -v, --verbose         Print debug messages.
+      -v, --verbose         Print logging messages.
       -o, --overwrite       Overwrite default configuration file. Don't worry,
                             your original file will be stored in backup_.
       -c CONFIG, --config CONFIG

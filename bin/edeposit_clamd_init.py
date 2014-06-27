@@ -290,7 +290,7 @@ def get_service_name():
 
 
 @require_root
-def main(conf_file, overwrite):
+def main(conf_file, overwrite, logger):
     """
     Create configuration and log file. Restart the daemon when configuration
     is done.
@@ -302,20 +302,24 @@ def main(conf_file, overwrite):
     uid = pwd.getpwnam(get_username()).pw_uid
 
     # stop the daemon
+    logger.info("Stopping the daemon.")
     sh.service(get_service_name(), "stop")
 
     # create files
+    logger.info("Creating config file.")
     create_config(
         cnf_file=conf_file,
         uid=uid,
         overwrite=overwrite
     )
+    logger.info("Creating log file.")
     create_log(
         log_file=REQUIRED_SETTINGS["LogFile"],
         uid=uid
     )
 
     # start the daemon
+    logger.info("Starting the daemon..")
     sh.service(get_service_name(), "start")
 
 
@@ -327,7 +331,7 @@ if __name__ == '__main__':
     parser.add_argument(
         "-v",
         "--verbose",
-        help="Print debug messages.",
+        help="Print logging messages.",
         action="store_true"
     )
     parser.add_argument(
@@ -346,13 +350,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.verbose:
-        logger.setLevel(logging.DEBUG)
-        logger.debug("Logger set to debug level.")
-    else:
         logger.setLevel(logging.INFO)
+        logger.debug("Logger set to INFO level.")
+    else:
+        logger.setLevel(logging.ERROR)
 
     try:
-        main(args.config, args.overwrite)
+        main(args.config, args.overwrite, logger)
     except AssertionError as e:
         sys.stderr.write(e.message + "\n")
         sys.exit(1)
