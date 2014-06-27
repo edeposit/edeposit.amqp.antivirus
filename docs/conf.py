@@ -49,7 +49,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'edeposit.amqp.ftp'
+project = u'edeposit.amqp.antivirus'
 copyright = u'2014 E-deposit team'
 
 # The full version, including alpha/beta/rc tags.
