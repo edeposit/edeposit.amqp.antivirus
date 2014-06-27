@@ -4,6 +4,8 @@
 # Interpreter version: python 2.7
 #
 """
+AMQP interface used by `edeposit.amqp <http://edeposit-amqp.readthedocs.org>`_
+package.
 """
 # Imports =====================================================================
 import antivirus
@@ -21,12 +23,13 @@ def _instanceof(instance, cls):
 # Main function ===============================================================
 def reactToAMQPMessage(message, UUID):
     """
-    React to given (AMQP) message. `message` is usually expected to be
-    :py:func:`collections.namedtuple` structure filled with all necessary data.
+    React to given (AMQP) message. `message` is expected to be
+    :py:func:`collections.namedtuple` structure from :mod:`.structures` filled
+    with all necessary data.
 
     Args:
         message (object): One of the request objects defined in
-                          :mod:`structures`.
+                          :mod:`.structures`.
         UUID (str): Unique ID of received message.
 
     Returns:
