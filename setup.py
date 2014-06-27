@@ -75,7 +75,7 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
 
-    scripts=['bin/edeposit_amqp_clamd_init.py'],
+    scripts=['bin/edeposit_clamd_init.py'],
 
     namespace_packages=['edeposit', 'edeposit.amqp'],
     include_package_data=True,
