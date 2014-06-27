@@ -1,5 +1,5 @@
-antivirus.conf_writer module
-============================
+Configuration writer
+====================
 
 .. automodule:: antivirus.conf_writer
     :members:

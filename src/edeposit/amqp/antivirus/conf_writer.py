@@ -3,7 +3,9 @@
 #
 # Interpreter version: python 2.7
 #
-
+"""
+This module is used to write and update configuration for ClamAV daemon.
+"""
 
 # Functions & objects =========================================================
 def add_or_update(data, item, value):
