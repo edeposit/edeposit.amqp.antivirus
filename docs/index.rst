@@ -33,9 +33,17 @@ which will configure ClamAV and create all necessary files and directories.
 You may also want to check :mod:`.settings` module, to change some of the paths
 using JSON configuration files.
 
+Database update
+^^^^^^^^^^^^^^^
+You should update signature database from time to time.
+
+You can do it by running ``freshclam`` command, or by sending
+:class:`.UpdateDatabase` structure over AMQP.
+
+I think, that best way is to put the ``freshclam`` command to cron.
+
 Usage
 -----
-
 
 TODO: fix
 
@@ -46,6 +54,10 @@ Parts of the module can be divided into two subcategories - script and API.
 
 Standalone script
 +++++++++++++++++
+
+Script can be found in ``bin/`` folder and it sould be authomatically put into
+your path, so you can just simply run ``edeposit_clamd_init.py`` from shell.
+
 .. toctree::
     :maxdepth: 1
 
@@ -95,22 +107,24 @@ Options
 Script provides three options - to run just unittests (``-u`` switch), to run
 integration tests (``-i`` switch) or to run both (``-a`` switch).
 
-Integration tests requires that ProFTPD is installed (there is test to test
-this) and also **root permissions**. Integration tests are trying all usual
-(and some unusual) use-cases, permissions to read/write into ProFTPD 
-configuration files and so on. Thats why the root access is required.
+Integration tests requires that ClamAV is installed, running and that the test
+script has **root permissions**. 
 
 Example of the success output from test script::
 
-    $ ./run_tests.sh -a
+    $ sudo service clamav-daemon start
     [sudo] password for bystrousak: 
+     * Starting ClamAV daemon clamd
+
+    $ ./run_tests.sh -a
     ============================= test session starts ==============================
     platform linux2 -- Python 2.7.5 -- py-1.4.20 -- pytest-2.5.2
-    collected 42 items 
+    collected 7 items 
 
-TODO: fix
+    src/edeposit/amqp/antivirus/tests/integration/test_antivirus.py .....
+    src/edeposit/amqp/antivirus/tests/unittests/test_amqp.py ..
 
-    ========================== 42 passed in 13.96 seconds ==========================
+    ========================== 7 passed in 44.04 seconds ===========================
 
 
 Indices and tables
