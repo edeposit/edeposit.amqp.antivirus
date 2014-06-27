@@ -52,8 +52,6 @@ REQUIRED_SETTINGS = {
     "ReadTimeout": "180",
 }
 
-
-# base64 encoded zlib compressed string
 CLEAN_CONFIG = """
 eJzNXOtz20aS/3z+K+as27KUo6iHH8m57j7QkpyoogdPlOzNXt2lhsCQnAgEGAxAifnrr3
 /dMwOApGI72WTXW+tYwKCnp9+v0c7Os50ddVLkEztVE5sZNSlKVc2MOsn0XA0+qFSbeZFj
@@ -183,18 +181,28 @@ ojrs
 # decode compressed clean config
 import zlib
 import base64
+#: clean configuration with commented values
 CLEAN_CONFIG = zlib.decompress(base64.b64decode(CLEAN_CONFIG))
 
 
 # Functions & objects =========================================================
 def get_username():
-    if settings.is_deb_system():
-        return "clamav"
-    else:
-        return "vscan"
+    """
+    Return username depending on type of system (deb/suse).
+    """
+    return "clamav" if settings.is_deb_system() else "vscan"
 
 
 def update_configuration(configuration):
+    """
+    Set all configuration specified in :attr:`REQUIRED_SETTINGS`.
+
+    Args:
+        configuration (str): Configuration file content.
+
+    Returns:
+        str: Updated configuration.
+    """
     for key, val in REQUIRED_SETTINGS.items():
         if val in ["$username", "$groupname"]:
             val = get_username()
@@ -205,6 +213,15 @@ def update_configuration(configuration):
 
 
 def create_config(cnf_file, uid, overwrite):
+    """
+    Creates configuration file and the directory where it should be stored and
+    set correct permissions.
+
+    Args:
+        cnf_file (str): Path to the configuration file.
+        uid (int): User ID - will be used for chown.
+        overwrite (bool): Overwrite the configuration with :attr:`CLEAN_CONFIG`.
+    """
     conf = None
 
     # needed also on suse, because pyClamd module
@@ -241,6 +258,13 @@ def create_config(cnf_file, uid, overwrite):
 
 
 def create_log(log_file, uid):
+    """
+    Create log file and set necessary permissions.
+
+    Args:
+        log_file (str): Path to the log file.
+        uid (int): User ID - will be used for chown.
+    """
     if not os.path.exists(log_file):  # create new log file
         dir_name = os.path.dirname(log_file)
         if not os.path.exists(dir_name):
@@ -255,14 +279,18 @@ def create_log(log_file, uid):
 
 
 def get_service_name():
-    if settings.is_deb_system():
-        return "clamav-daemon"
-    else:
-        return "clamd"
+    """
+    Return name of the daemon depending on the system type.
+    """
+    return "clamav-daemon" if settings.is_deb_system() else "clamd"
 
 
 @require_root
 def main(conf_file, overwrite):
+    """
+    Create configuration and log file. Restart the daemon when configuration
+    is done.
+    """
     uid = pwd.getpwnam(get_username()).pw_uid
 
     # stop the daemon
