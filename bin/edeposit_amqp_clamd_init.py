@@ -3,6 +3,10 @@
 #
 # Interpreter version: python 2.7
 #
+"""
+Initialization script used to set necessary settings in ClamAV configuration
+file and correct permissions.
+"""
 # Imports =====================================================================
 import os
 import sh
@@ -19,7 +23,7 @@ try:
     from edeposit.amqp.antivirus import settings
     from edeposit.amqp.antivirus import conf_writer
     from edeposit.amqp.antivirus.wrappers.freshclam import require_root
-except ImportError:
+except (ImportError, AttributeError):
     sys.path.insert(0, os.path.abspath('../src/edeposit/amqp'))
     import antivirus
     from antivirus import settings
@@ -181,7 +185,7 @@ ojrs
 # decode compressed clean config
 import zlib
 import base64
-#: clean configuration with commented values
+# clean configuration with commented values
 CLEAN_CONFIG = zlib.decompress(base64.b64decode(CLEAN_CONFIG))
 
 
@@ -290,6 +294,10 @@ def main(conf_file, overwrite):
     """
     Create configuration and log file. Restart the daemon when configuration
     is done.
+
+    Args:
+        conf_file (str): Path to the configuration file.
+        overwrite (bool): Overwrite the configuration file with `clean` config?
     """
     uid = pwd.getpwnam(get_username()).pw_uid
 
