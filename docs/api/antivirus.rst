@@ -1,27 +1,36 @@
 antivirus package
 =================
 
-Subpackages
------------
+There are two levels of abstraction - AMPQ API and python API.
 
-.. toctree::
+AQMP API is higlevel API, where you send some structure, something happens
+in magick box and you get back another structure.
 
-    antivirus.wrappers
+Python API is just collection of `"lowlevel"` python wrappers over ClamAV.
 
-Submodules
-----------
-
-.. toctree::
-
-   antivirus.antivirus
-   antivirus.conf_writer
-   antivirus.settings
-   antivirus.structures
-
-Module contents
----------------
+AMQP API
+--------
 
 .. automodule:: antivirus
     :members:
     :undoc-members:
     :show-inheritance:
+
+All AMQP communication structures can be found in :mod:`~antivirus.structures`
+submodule.
+
+Python API
+----------
+
+.. toctree::
+    :maxdepth: 1
+
+    antivirus.antivirus
+    antivirus.conf_writer
+    antivirus.wrappers
+
+Package configuration
+---------------------
+
+If you wish to change behavior or paths to some of the files, you can use
+do it in :mod:`~antivirus.settings` submodule.
