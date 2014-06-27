@@ -69,7 +69,7 @@ LOGFILE = "/var/log/clamav/clamav.log"
 # User configuration reader (don't edit this ==================================
 _ALLOWED = [str, int, float]
 
-_SETTINGS_PATH = "/edeposit/ftp.json"
+_SETTINGS_PATH = "/edeposit/antivirus.json"
 """
 Path which is appended to default search paths (``$HOME`` and ``/etc``).
 
