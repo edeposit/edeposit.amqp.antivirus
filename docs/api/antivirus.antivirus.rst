@@ -1,5 +1,5 @@
-antivirus.antivirus module
-==========================
+Antivirus wrapper
+=================
 
 .. automodule:: antivirus.antivirus
     :members:

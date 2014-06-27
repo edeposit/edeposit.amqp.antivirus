@@ -41,12 +41,7 @@ TODO: fix
 
 Content
 -------
-
-
-
 Parts of the module can be divided into two subcategories - script and API.
-
-TODO: fix
 
 
 Standalone script
@@ -63,6 +58,10 @@ API
     :maxdepth: 1
 
     /api/antivirus
+    /api/antivirus.antivirus
+    /api/antivirus.structures
+    /api/antivirus.settings
+    /api/antivirus.wrappers
 
 
 Source code

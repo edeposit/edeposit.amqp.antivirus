@@ -1,5 +1,5 @@
-antivirus.structures module
-===========================
+AMQP communication structures
+=============================
 
 .. automodule:: antivirus.structures
     :members:

@@ -27,7 +27,18 @@ Python API
 
     antivirus.antivirus
     antivirus.conf_writer
+
+
+Wrappers
+++++++++
+
+.. toctree::
+    :maxdepth: 1
+
     antivirus.wrappers
+    antivirus.wrappers.clamd
+    antivirus.wrappers.clamscan
+    antivirus.wrappers.freshclam
 
 Package configuration
 ---------------------
