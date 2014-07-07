@@ -1,0 +1,31 @@
+class ScanFile {
+    .b64_data
+    .filename
+    .count()
+    .index()
+}
+class UpdateDatabase {
+    .count()
+    .index()
+}
+class ScanResult {
+    .filename
+    .result
+    .count()
+    .index()
+}
+class DatabaseUpdated {
+    .log
+    .count()
+    .index()
+}
+
+class reactToAMQPMessage {
+}
+
+
+ScanFile --> reactToAMQPMessage
+UpdateDatabase --> reactToAMQPMessage
+
+reactToAMQPMessage --> ScanResult
+reactToAMQPMessage --> DatabaseUpdated

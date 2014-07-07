@@ -1,0 +1,22 @@
+class ScanFile {
+    $templater:struct:structures
+}
+class UpdateDatabase {
+    $templater:struct:structures
+}
+class ScanResult {
+    $templater:struct:structures
+}
+class DatabaseUpdated {
+    $templater:struct:structures
+}
+
+class reactToAMQPMessage {
+}
+
+
+ScanFile --> reactToAMQPMessage
+UpdateDatabase --> reactToAMQPMessage
+
+reactToAMQPMessage --> ScanResult
+reactToAMQPMessage --> DatabaseUpdated
