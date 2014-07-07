@@ -19,6 +19,8 @@ AMQP API
 All AMQP communication structures can be found in :mod:`~antivirus.structures`
 submodule.
 
+.. image:: /_static/amqp.png
+
 Python API
 ----------
 

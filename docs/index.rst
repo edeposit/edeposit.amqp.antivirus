@@ -45,11 +45,41 @@ I think, that the best way is to put the ``freshclam`` command to cron.
 Usage
 -----
 
-TODO: fix
+To check some file, encode it to ``base64``, put it into :class:`.ScanFile`
+structure and send it over AMQP to :func:`.reactToAMQPMessage`.
+
+Here is example without AMQP communication, but at the AMQP level of
+abstraction::
+
+    $ python
+    >>> import base64
+    >>> import antivirus as av
+    >>> fn = "test_file.exe"
+    >>> data = open(fn).read()
+    >>> av.reactToAMQPMessage(
+    ...    av.structures.ScanFile(fn, base64.b64encode(data)),
+    ...    "UUID"
+    ... )
+    ScanResult(filename='test_file.exe', result={})  # result is blank -> file is ok
+
+Or positive detection::
+
+    $ python
+    >>> import base64
+    >>> import antivirus as av
+    >>> fn = "eicar.com"
+    >>> data = open(fn).read()
+    >>> av.reactToAMQPMessage(
+    ...    av.structures.ScanFile(fn, base64.b64encode(data)),
+    ...    "UUID"
+    ... )
+    ScanResult(filename='test_file.exe', result={u'/tmp/tmpuCA2fe_eicar.com': ('FOUND', 'Eicar-Test-Signature')})
 
 Content
 -------
 Parts of the module can be divided into two subcategories - script and API.
+
+.. image:: /_static/relations.png
 
 
 Standalone script
