@@ -35,12 +35,12 @@ using JSON configuration files.
 
 Database update
 ^^^^^^^^^^^^^^^
-You should update signature database from time to time.
+You should update the signature database from time to time.
 
 You can do it by running ``freshclam`` command, or by sending
 :class:`.UpdateDatabase` structure over AMQP.
 
-I think, that best way is to put the ``freshclam`` command to cron.
+I think, that the best way is to put the ``freshclam`` command to cron.
 
 Usage
 -----
@@ -55,7 +55,7 @@ Parts of the module can be divided into two subcategories - script and API.
 Standalone script
 +++++++++++++++++
 
-Script can be found in ``bin/`` folder and it sould be authomatically put into
+Script can be found in ``bin/`` folder and it should be automatically put into
 your path, so you can just simply run ``edeposit_clamd_init.py`` from shell.
 
 .. toctree::
@@ -90,7 +90,7 @@ in the root of the project.
 
 Requirements
 ++++++++++++
-This script expects that pytest_ is installed. In case you don't have it yet,
+Test script expects that pytest_ is installed. In case you don't have it yet,
 it can be easily installed using following command::
 
     pip install --user pytest
@@ -110,7 +110,7 @@ integration tests (``-i`` switch) or to run both (``-a`` switch).
 Integration tests requires that ClamAV is installed, running and that the test
 script has **root permissions**. 
 
-Example of the success output from test script::
+Example of the success output from the test script::
 
     $ sudo service clamav-daemon start
     [sudo] password for bystrousak: 
@@ -133,5 +133,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
- 
