@@ -1,0 +1,65 @@
+package "wrappers submodule" as wrappers {
+    class winit as "_​_init__.py" {
+        $templater:module:wrappers/__init__
+    }
+    class clamd as "clamd.py" {
+        clamd daemon wrapper.
+        $templater:module:wrappers/clamd
+    }
+    class clamscan as "clamscan.py" {
+        clamscan standalone
+        program wapper.
+
+        $templater:module:wrappers/clamscan
+    }
+    class freshclam as "freshclam.py" {
+        Database updater wrapper.
+        $templater:module:wrappers/freshclam
+    }
+}
+
+clamd -u-> winit
+clamscan -u-> winit
+freshclam -u-> winit
+
+class antivirus as "antivirus.py" {
+    Integration of settings and wrappers/
+    into one file.
+
+    $templater:module:antivirus
+}
+class conf_writer as "conf_writer.py" {
+    This is used to manipulate
+    ClamAV's configuration file.
+
+    $templater:module:conf_writer
+}
+class settings as "settings.py" {
+    Global module settings.
+
+    $templater:module:settings
+}
+class structures as "structures.py" {
+    Structures used in
+    AMQP communication.
+
+    $templater:module:structures
+}
+class init as "_​_init__.py" {
+    AMQP interface.
+
+    $templater:module:_​_init__
+}
+
+antivirus -u-> init
+winit -u-> antivirus
+settings -r-> antivirus
+structures -r-> init
+
+package bin {
+    class init_script as "edeposit_clamd_init.py" <<P, Green>>{
+        Initialization script.
+    }
+}
+
+conf_writer -u-> init_script

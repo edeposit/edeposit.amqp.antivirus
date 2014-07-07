@@ -1,0 +1,72 @@
+package "wrappers submodule" as wrappers {
+    class winit as "_​_init__.py" {
+    }
+    class clamd as "clamd.py" {
+        clamd daemon wrapper.
+        scan_file(path)
+    }
+    class clamscan as "clamscan.py" {
+        clamscan standalone
+        program wapper.
+
+        scan_file(path)
+    }
+    class freshclam as "freshclam.py" {
+        Database updater wrapper.
+        require_root(fn)
+        update_database()
+    }
+}
+
+clamd -u-> winit
+clamscan -u-> winit
+freshclam -u-> winit
+
+class antivirus as "antivirus.py" {
+    Integration of settings and wrappers/
+    into one file.
+
+    scan_file(path)
+    save_and_scan(filename, b64_data)
+}
+class conf_writer as "conf_writer.py" {
+    This is used to manipulate
+    ClamAV's configuration file.
+
+    add_or_update(data, item, value)
+    comment(data, what)
+}
+class settings as "settings.py" {
+    Global module settings.
+
+    is_deb_system()
+    get_all_constants()
+    substitute_globals(config_dict)
+}
+class structures as "structures.py" {
+    Structures used in
+    AMQP communication.
+
+    class ScanFile
+    class UpdateDatabase
+    class ScanResult
+    class DatabaseUpdated
+}
+class init as "_​_init__.py" {
+    AMQP interface.
+
+    reactToAMQPMessage(message, UUID)
+}
+
+antivirus -u-> init
+winit -u-> antivirus
+settings -r-> antivirus
+structures -r-> init
+
+package bin {
+    class init_script as "edeposit_clamd_init.py" <<P, Green>>{
+        Initialization script.
+    }
+}
+
+conf_writer -u-> init_script
