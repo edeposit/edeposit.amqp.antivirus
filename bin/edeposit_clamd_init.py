@@ -182,10 +182,9 @@ tq31wsnWRG+rU7e52/DsNHQH/YbfUWRDVs831bm9wKPD6g7GkEww5IfLgs1hO+dr/aKMzp
 ojrs
 """
 
-# decode compressed clean config
 import zlib
 import base64
-# clean configuration with commented values
+# decode compressed clean (with comments and so on) configuration file
 CLEAN_CONFIG = zlib.decompress(base64.b64decode(CLEAN_CONFIG))
 
 
