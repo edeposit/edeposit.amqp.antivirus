@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.1
+-----
+    - ``reactToAMQPMessage()`` parameters modified.
+
 1.0.0
 -----
     - Everything should work.
